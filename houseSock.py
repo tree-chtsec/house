@@ -90,6 +90,13 @@ def refresh_device():
     getDevice()
     # emit('update_device', {'data': cgi.escape(str(house_global.device))})
 
+@socketio.on('add_device', namespace='/eventBus')
+@authenticated_only
+def add_device(msg):
+    device_info = msg.get('info')
+    frida.get_device_manager().add_remote_device(device_info)
+    getDevice()
+
 @socketio.on('check_monitor_running', namespace='/eventBus')
 @authenticated_only
 def check_monitor_running():
@@ -392,7 +399,7 @@ def dounloadMonitor():
 @authenticated_only
 def doInspect(message):
 
-    house_global.device = frida.get_usb_device()
+    #house_global.device = frida.get_usb_device()
 
     house_global.onMessageException = ''
     ins_classname = message.get('ins_classname')

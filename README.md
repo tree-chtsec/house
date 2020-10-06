@@ -20,7 +20,6 @@ intended to make Frida script writing as simple as possible.*
 ~~~
 git clone https://github.com/nccgroup/house
 cd house
-pip3 install -r requirements.txt
 pip3 install pipenv
 pipenv --python=/usr/bin/python3 install
 pipenv --python=/usr/bin/python3 shell
@@ -155,6 +154,20 @@ Often occues when there are multiple USB devices connected, try to restart the t
 
 #### Frida error?
 House has been tested using Frida version 12.8.6; there might be some issues with some other versions, also make sure frida-python matches frida-server's version. If still not working, try to run the generated frida scripts manually to see if it works.
+
+#### Remote Frida Server Support, How To?
+
+House side:
+
+Add <remote-ip>:<remote-port> through House webpage.
+
+Client side ( with adb devices ):
+
+1. In rooted device: `./frida-server -l 0.0.0.0 27042`
+2. adb port-forwarding `adb forward tcp:27042 tcp:27042`
+3. setup tcp proxy `tcpproxy_server.exe <public-ip> 27042 127.0.0.1 27042`
+
+[tcp proxy](https://www.partow.net/programming/tcpproxy/index.html), easy-to-use c++ tcp proxy.
 
 ## Acknowledgements
 Special thanks to following open-source projects for inspirations on House:

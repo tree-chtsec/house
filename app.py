@@ -35,11 +35,7 @@ log.setLevel(logging.ERROR)
 
 @app.route('/')
 def hello():
-    if str(request.remote_addr) == "127.0.0.1":
-        # no dns rebinding
-        return refresh()
-    else:
-        return ''
+    return refresh()
 
 @app.route('/messages', methods=['GET'])
 def message():
@@ -120,7 +116,7 @@ def hook_clear():
 
 @app.route('/hook', methods=['POST'])
 def hook():
-    house_global.device = frida.get_usb_device()
+    #house_global.device = frida.get_usb_device()
     class_name = str(request.form.get('classname'))
     method_name = str(request.form.get('methodname')) 
     if (method_name != 'None') & (class_name != 'None'):
@@ -133,7 +129,7 @@ def hook():
 
 @app.route('/load_script', methods=['POST'])
 def loadscript():
-    house_global.device = frida.get_usb_device()
+    #house_global.device = frida.get_usb_device()
 
     house_global.script_to_load = str(request.form.get('script'))
     load_script()
@@ -151,7 +147,7 @@ def main():
     Dynamic Mobile Analysis Tool
     Contact: hao.ke@nccgroup.com
 
-Communications will happen over USB, make sure have your android device plugged in.
+Communications will happen over USB/Remote, make sure have your android device plugged in.
     """)
     init_conf()
     init_cache()
@@ -186,12 +182,12 @@ Communications will happen over USB, make sure have your android device plugged 
                 print (stylize("[!]monitor_conf invalid format",Error))
     init_settings()
     
-    host = "127.0.0.1"
+    host = "0.0.0.0"
     if len(argv) > 1:
         port = int(argv[1])
     else:
         port  = 8000
-    print (stylize("[+] House running at http://127.0.0.1:{}".format(port), Info))
+    print (stylize("[+] House running at http://{}:{}".format(host, port), Info))
 
     app.jinja_env.auto_reload = True
     app.config['TEMPLATES_AUTO_RELOAD'] = True

@@ -29,6 +29,10 @@ function refresh_device() {
     socket.emit("refresh_device")
 }
 
+function add_device(device_info) {
+    socket.emit("add_device", {info: device_info})
+}
+
 function select_device() {
     device_id = $("input[name='device_id']:checked").val();
     console.log("select_device_button clicked..")
@@ -628,6 +632,7 @@ window.onload = function () {
       <label><input type="radio" name="device_id" value="` + id + `">` + `<p class="text-info"><i class="glyphicon glyphicon-phone"></i>` + val + " </p></label></div>"
                 });
                 select_device_html += `<button class="btn btn-success" type="button" id="select_device_button" onclick="select_device()"'>Select</button>
+                <input id="new_device_info" class="form-control" placeholder="192.168.1.111:27042"><button class="btn btn-success" type="button" onclick='add_device($("#new_device_info").val())'>Add</button>
                     </div>`
                 $("#device_info_tab").html(select_device_html)
             }
@@ -645,10 +650,11 @@ window.onload = function () {
       <label><input type="radio" name="device_id" value="` + id + `">` + `<p class="text-info"><i class="glyphicon glyphicon-phone"></i>` + val + " </p></label></div>"
                 });
                 select_device_html += `<button class="btn btn-success" type="button" id="select_device_button" onclick="select_device()"'>Select</button>
+                <input id="new_device_info" class="form-control" placeholder="192.168.1.111:27042"><button class="btn btn-success" type="button" onclick='add_device($("#new_device_info").val())'>Add</button>
                     </div>`
                 $("#device_info_tab").html(select_device_html)
                 // $("input[name='device_id']:checked").val();
-                $("input[name='device_id'][value=" + id + "]").attr('checked', 'checked');
+                $("input[name='device_id'][value='" + id + "']").attr('checked', 'checked');
                 // console.log(select_device_html)
             }
 
@@ -663,7 +669,7 @@ window.onload = function () {
                 device_html = `<div class="bg-danger">
                             <p class="text-warning">Can I have ur phone please?</p>`
             }
-            device_html += `<button class="btn btn-success" type="button" onclick='refresh_device()'>Refresh</button>
+            device_html += `<button class="btn btn-success" type="button" onclick='refresh_device()'>Refresh</button><input id="new_device_info" class="form-control" placeholder="new_device_info"><button class="btn btn-success" type="button" onclick='add_device($("#new_device_info").val())'>Add</button>
             </div>`
             $("#device_info_tab").html(device_html)
             console.log(("[+]new Device: " + msg.data))
